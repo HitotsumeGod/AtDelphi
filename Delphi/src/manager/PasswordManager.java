@@ -7,9 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Scanner;
+import plugs.Shorthand;
 
-public class PasswordManager {
+public class PasswordManager implements Shorthand {
 	
 	public PasswordManager() throws IOException {
 		
@@ -31,7 +31,7 @@ public class PasswordManager {
 	private static char[] password = null;
 	private static boolean loggedIn = false;
 	
-	public static void say(String s) {
+	public void say(String s) {
 		
 		System.out.println(s);
 		
@@ -97,34 +97,6 @@ public class PasswordManager {
 		bw = new BufferedWriter(new FileWriter("user.txt"));
 		bw.write(username);
 		bw.close();
-		
-	}
-	
-	public static void main(String[] args) {
-		
-		Scanner s = new Scanner(System.in);
-		PasswordManager pm = null;
-		try {
-			pm = new PasswordManager();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		say("Do you already have an account? (y/n)");
-		while (true) {
-		if (s.nextLine().charAt(0) == 'n') {
-			pm.signUp();
-			break;
-		}
-		if (s.nextLine().charAt(0) == 'y')
-			break;
-		}
-		say("Would you like to log in? (y/n)");
-		if (s.nextLine().charAt(0) != 'y')
-			System.exit(0);
-		pm.login();
-		if (s.nextLine().equals("check"))
-			pm.logStatus();
-		s.close();
 		
 	}
 
