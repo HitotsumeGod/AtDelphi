@@ -1,10 +1,31 @@
 package manager;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.Console;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class PasswordManager {
+	
+	public PasswordManager() throws IOException {
+		
+		String s;
+		String u;
+		BufferedReader br;
+		br = new BufferedReader(new FileReader("pass.txt"));
+		if ((s = br.readLine()) != null)
+			password = s.toCharArray();
+		br.close();
+		br = new BufferedReader(new FileReader("user.txt"));
+		if ((u = br.readLine()) != null)
+			username = u;
+		br.close();
+		
+	}
 	
 	private static String username = null;
 	private static char[] password = null;
@@ -26,6 +47,12 @@ public class PasswordManager {
 		if (username == null || password == null) {
 			say("System error. Please restart program.");
 			System.exit(0);
+		} else {
+			try {
+				logWriter();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -61,11 +88,36 @@ public class PasswordManager {
 		
 	}
 	
+	private static void logWriter() throws IOException {
+		
+		BufferedWriter bw = null;
+		bw = new BufferedWriter(new FileWriter("pass.txt"));
+		bw.write(password);
+		bw.close();
+		bw = new BufferedWriter(new FileWriter("user.txt"));
+		bw.write(username);
+		bw.close();
+		
+	}
+	
 	public static void main(String[] args) {
 		
 		Scanner s = new Scanner(System.in);
-		PasswordManager pm = new PasswordManager();
-		pm.signUp();
+		PasswordManager pm = null;
+		try {
+			pm = new PasswordManager();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		say("Do you already have an account? (y/n)");
+		while (true) {
+		if (s.nextLine().charAt(0) == 'n') {
+			pm.signUp();
+			break;
+		}
+		if (s.nextLine().charAt(0) == 'y')
+			break;
+		}
 		say("Would you like to log in? (y/n)");
 		if (s.nextLine().charAt(0) != 'y')
 			System.exit(0);
