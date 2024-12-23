@@ -81,16 +81,15 @@ public class PasswordManager implements Shorthand {
 		
 	}
 	
-	private void logStatus() {
+	private boolean logStatus() {
 		
-		if (loggedIn)
-			say("Logged in -----> TRUE");
+		return loggedIn;
 		
 	}
 	
 	private static void logWriter() throws IOException {
 		
-		BufferedWriter bw = null;
+		BufferedWriter bw;
 		bw = new BufferedWriter(new FileWriter("pass.txt"));
 		bw.write(password);
 		bw.close();
